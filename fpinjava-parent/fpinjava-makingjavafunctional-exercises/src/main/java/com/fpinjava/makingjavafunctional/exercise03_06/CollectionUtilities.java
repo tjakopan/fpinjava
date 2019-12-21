@@ -49,7 +49,11 @@ public class CollectionUtilities {
   public static <T, U> U foldLeft(List<T> ts,
                                   U identity,
                                   Function<U, Function<T, U>> f) {
-    throw new RuntimeException("To be implemented");
+    U acc = identity;
+    for (T t: ts) {
+      acc = f.apply(acc).apply(t);
+    }
+    return acc;
   }
 
   public static <T> List<T> append(List<T> list, T t) {
