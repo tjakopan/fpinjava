@@ -126,11 +126,11 @@ public abstract class Option<A> {
 
   public static <A, B> Option<List<B>> traverse(List<A> list,
                                                 Function<A, Option<B>> f) {
-    throw new IllegalStateException("Not implemented yet");
+    return list.foldRight(some(List.list()), a -> l -> map2(f.apply(a), l, b -> l1 -> l1.cons(b)));
   }
 
   public static <A> Option<List<A>> sequence(List<Option<A>> list) {
-    throw new IllegalStateException("Not implemented yet");
+    return traverse(list, a -> a);
   }
 
 }
