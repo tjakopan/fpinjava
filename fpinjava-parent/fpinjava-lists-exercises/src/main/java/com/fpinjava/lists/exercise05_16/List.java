@@ -205,6 +205,6 @@ public abstract class List<A> {
   }
 
   public static <A> List<A> flatten(List<List<A>> list) {
-    throw new IllegalStateException("To be implemented");
+    return list.foldLeft(list(), l1 -> l2 -> concat(l1, l2));
   }
 }

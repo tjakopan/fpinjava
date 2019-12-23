@@ -20,7 +20,7 @@ public abstract class List<A> {
   public abstract <B> B foldLeft(B identity, Function<B, Function<A, B>> f);
 
   public List<A> filter(Function<A, Boolean> f) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(list(), a -> l -> f.apply(a) ? l.cons(a) : l);
   }
 
   public <B> List<B> map(Function<A, B> f) {

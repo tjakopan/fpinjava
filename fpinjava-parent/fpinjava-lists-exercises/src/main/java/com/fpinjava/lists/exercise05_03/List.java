@@ -1,6 +1,11 @@
 package com.fpinjava.lists.exercise05_03;
 
 
+import com.fpinjava.common.TailCall;
+
+import static com.fpinjava.common.TailCall.ret;
+import static com.fpinjava.common.TailCall.sus;
+
 public abstract class List<A> {
 
   public abstract A head();
@@ -39,7 +44,7 @@ public abstract class List<A> {
     }
 
     public String toString() {
-      throw new RuntimeException("To be implemented");
+      return "[NIL]";
     }
   }
 
@@ -71,7 +76,13 @@ public abstract class List<A> {
     }
 
     public String toString() {
-      throw new RuntimeException("To be implemented");
+      return "[" + toString_(new StringBuilder(), this).eval() + "NIL]";
+    }
+
+    private static <A> TailCall<StringBuilder> toString_(StringBuilder acc, List<A> list) {
+      return list.isEmpty()
+              ? ret(acc)
+              : sus(() -> toString_(acc.append(list.head()).append(", "), list.tail()));
     }
 }
 

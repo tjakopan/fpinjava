@@ -1,5 +1,6 @@
 package com.fpinjava.lists.exercise05_06;
 
+import com.fpinjava.common.CollectionUtilities;
 import com.fpinjava.common.Function;
 import com.fpinjava.common.TailCall;
 
@@ -63,12 +64,12 @@ public abstract class List<A> {
 
     @Override
     public List<A> reverse() {
-      throw new RuntimeException("To be implemented");
+      return this;
     }
 
     @Override
     public List<A> init() {
-      throw new RuntimeException("To be implemented");
+      return this;
     }
   }
 
@@ -136,12 +137,18 @@ public abstract class List<A> {
 
     @Override
     public List<A> reverse() {
-      throw new RuntimeException("To be implemented");
+      return reverse_(list(), this).eval();
+    }
+
+    private static <A> TailCall<List<A>> reverse_(List<A> acc, List<A> list) {
+      return list.isEmpty()
+              ? ret(acc)
+              : reverse_(new Cons<>(list.head(), acc), list.tail());
     }
 
     @Override
     public List<A> init() {
-      throw new RuntimeException("To be implemented");
+      return this.reverse().tail().reverse();
     }
   }
 
