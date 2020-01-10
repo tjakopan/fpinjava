@@ -46,11 +46,11 @@ public abstract class Result<T> implements Serializable {
   }
 
   public T getOrElseViaFoldLeft(final T defaultValue) {
-    throw new IllegalStateException("To be implemented");
+    return foldLeft(defaultValue, t1 -> t2 -> t2);
   }
 
   public T getOrElseViaFoldRight(final T defaultValue) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(defaultValue, t1 -> t2 -> t1);
   }
 
   public Result<T> orElse(Supplier<Result<T>> defaultValue) {

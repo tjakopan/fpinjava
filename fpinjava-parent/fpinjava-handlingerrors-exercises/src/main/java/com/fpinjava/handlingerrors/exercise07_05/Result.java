@@ -9,7 +9,7 @@ import java.io.Serializable;
 public abstract class Result<T> implements Serializable {
 
   @SuppressWarnings("rawtypes")
-  private static Result empty = new Empty();
+  private static final Result empty = new Empty();
 
   private Result() {
   }
@@ -27,11 +27,11 @@ public abstract class Result<T> implements Serializable {
   }
 
   public Result<T> filter(Function<T, Boolean> p) {
-    throw new RuntimeException("To be implemented");
+    return filter(p, "Condition is not matched");
   }
 
   public Result<T> filter(Function<T, Boolean> p, String message) {
-    throw new RuntimeException("To be implemented");
+    return flatMap(t -> p.apply(t) ? this : failure(message));
   }
 
   private static class Empty<T> extends Result<T> {
