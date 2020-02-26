@@ -251,7 +251,21 @@ public abstract class List<A> {
   }
 
   public<B> Result<B> parFoldLeft(ExecutorService es, B identity, Function<B, Function<A, B>> f, Function<B, Function<B, B>> m) {
-    throw new IllegalStateException("To be implemented");
+    final int chunks = 1024;
+    final List<List<A>> dList = divide(chunks);
+    try {
+        List<B> result = dList.map(l -> es.submit(() -> l.foldLeft(identity, f)))
+                .map(fb -> {
+                    try {
+                        return fb.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        return Result.success(result.foldLeft(identity, m));
+    } catch (Exception e) {
+        return Result.failure(e);
+    }
   }
 
   @SuppressWarnings("rawtypes")

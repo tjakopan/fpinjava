@@ -268,7 +268,18 @@ public abstract class List<A> {
   }
 
   public <B> Result<List<B>> parMap(ExecutorService es, Function<A, B> g) {
-    throw new IllegalStateException("To be implemented");
+    try {
+        return Result.success(this.map(a -> es.submit(() -> g.apply(a)))
+                .map(fb -> {
+                    try {
+                        return fb.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                }));
+    } catch (Exception e) {
+        return Result.failure(e);
+    }
   }
 
   @SuppressWarnings("rawtypes")

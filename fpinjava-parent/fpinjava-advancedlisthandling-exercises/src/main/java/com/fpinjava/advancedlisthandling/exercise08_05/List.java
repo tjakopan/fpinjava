@@ -268,6 +268,6 @@ public abstract class List<A> {
   }
 
   public static <A> List<A> flattenResult(List<Result<A>> list) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(list, List.<A>list(), ra -> la -> ra.isSuccess() ? la.cons(ra.successValue()) : la);
   }
 }
