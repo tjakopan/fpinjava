@@ -31,7 +31,7 @@ abstract class Stream<A> {
   public abstract <B> B foldRight(Supplier<B> z, Function<A, Function<Supplier<B>, B>> f);
 
   public <B> Stream<B> map(Function<A, B> f) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(Stream::empty, a -> ss -> cons(() -> f.apply(a), ss));
   }
 
   public Result<A> headOptionViaFoldRight() {
